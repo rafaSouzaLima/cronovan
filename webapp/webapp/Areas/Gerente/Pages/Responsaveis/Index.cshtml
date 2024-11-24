@@ -1,0 +1,33 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Responsáveis";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Responsaveis[0].Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.Responsaveis[0].Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Responsaveis[0].Cpf)</th>
+            <th>@Html.DisplayNameFor(model => model.Responsaveis[0].DataNascimento)</th>
+            <th>@Html.DisplayNameFor(model => model.Responsaveis[0].Telefone)</th>
+            <th>@Html.DisplayNameFor(model => model.Responsaveis[0].Endereco)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Responsaveis) {
+            var enderecoFormatado = item.Endereco?.ToString() ?? string.Empty;
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.Cpf)</td>
+                <td>@Html.DisplayFor(modelItem => item.DataNascimento)</td>
+                <td>@Html.DisplayFor(modelItem => item.Telefone)</td>
+                <td>@enderecoFormatado</td>
+            </tr>
+        }
+    </tbody>
+</table>

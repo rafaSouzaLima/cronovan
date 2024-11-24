@@ -17,17 +17,21 @@ using Microsoft.Extensions.Logging;
 using webapp.Models;
 
 namespace webapp.Areas.Identity.Pages.Account;
-    
+
 [AllowAnonymous]
-public class LoginModel : PageModel {
+public class LoginModel : PageModel
+{
     private readonly SignInManager<Usuario> _signInManager;
+    private readonly UserManager<Usuario> _userManager;
     private readonly ILogger<LoginModel> _logger;
 
-    public LoginModel(SignInManager<Usuario> signInManager, ILogger<LoginModel> logger) {
+    public LoginModel(SignInManager<Usuario> signInManager, UserManager<Usuario> userManager, ILogger<LoginModel> logger)
+    {
         _signInManager = signInManager;
+        _userManager = userManager;
         _logger = logger;
     }
-    
+
     [BindProperty]
     public InputModel Input { get; set; }
 
@@ -40,7 +44,7 @@ public class LoginModel : PageModel {
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        
+
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
@@ -61,20 +65,28 @@ public class LoginModel : PageModel {
     }
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null) {
-        returnUrl ??= Url.Content("~/");
+        if (!ModelState.IsValid) return Page();
 
-        if (ModelState.IsValid) {
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, false ,lockoutOnFailure: false);
-            if (result.Succeeded) {
-                _logger.LogInformation("User logged in.");
-                return LocalRedirect(returnUrl);
-            }
+        var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: false);
+        if (!result.Succeeded)
+        {
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return Page();
         }
 
-        // If we got this far, something failed, redisplay form
-        return Page();
+        if (User.IsInRole("Administrador")) {
+            returnUrl = Url.Page("/Gerentes/Index", new { area = "Administrador" });
+        } else if (User.IsInRole("Gerente")) {
+            returnUrl = Url.Page("/Estudantes/Index", new { area = "Gerente"});
+        } else if (User.IsInRole("Estudante")) {
+            returnUrl = Url.Page("/Index", new { area = "Estudante"});
+        } else if (User.IsInRole("Responsavel")) {
+            returnUrl = Url.Page("/Index", new { area = "Responsavel"});
+        } else if (User.IsInRole("Motorista")) {
+            returnUrl = Url.Page("/Index", new { area = "Motorista"});
+        }
+
+        _logger.LogInformation("User logged in.");
+        return LocalRedirect(returnUrl);
     }
 }

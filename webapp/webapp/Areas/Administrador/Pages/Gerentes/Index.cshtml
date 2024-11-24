@@ -1,0 +1,31 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Gerentes";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-area="Administrador" asp-page="/Gerentes/Create">Criar novo Gerente</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Gerentes[0].Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.Gerentes[0].Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Gerentes[0].UserName)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Gerentes)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+            </tr>
+        }
+    </tbody>
+</table>

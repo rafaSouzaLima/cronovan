@@ -1,0 +1,90 @@
+@page
+@model CreateModel
+@{
+    ViewData["Title"] = "Novo Motorista";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<section class="row justify-content-center">
+    <form method="post">
+        <fieldset class="border rounded p-3 mb-4" id="credenciais">
+            <legend>Credenciais</legend>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <label asp-for="Input.Cnh" class="form-label">CNH</label>
+                <input asp-for="Input.Cnh" class="form-control" autocomplete="username" aria-required="true" />
+                <span asp-validation-for="Input.Cnh" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Cpf" class="form-label">CPF</label>
+                <input asp-for="Input.Cpf" class="form-control" autocomplete="username" aria-required="true" />
+                <span asp-validation-for="Input.Cpf" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Nome" class="form-label">Nome</label>
+                <input asp-for="Input.Nome" class="form-control" autocomplete="username" aria-required="true" />
+                <span asp-validation-for="Input.Nome" class="text-danger"></span>
+            </div>
+            <div class=" mb-3">
+                <label asp-for="Input.Email" class="form-label">E-mail</label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Senha" class="form-label">Senha</label>
+                <input asp-for="Input.Senha" class="form-control" autocomplete="current-password" aria-required="true" />
+                <span asp-validation-for="Input.Senha" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.ConfirmarSenha">Confirmar Senha</label>
+                <input asp-for="Input.ConfirmarSenha" class="form-control" autocomplete="new-password" aria-required="true" />
+                <span asp-validation-for="Input.ConfirmarSenha" class="text-danger"></span>
+            </div>
+        </fieldset>
+        <fieldset class="border rounded p-3 mb-4" id="dados-adicionais">
+            <legend>Dados Adicionais</legend>
+            <div class="row mb-3">
+                <label asp-for="Input.DataNascimento">Data de Nascimento</label>
+                <input asp-for="Input.DataNascimento" class="form-control" autocomplete="new-password" aria-required="true" />
+                <span asp-validation-for="Input.DataNascimento" class="text-danger"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Input.Telefone">Telefone</label>
+                <input asp-for="Input.Telefone" class="form-control" autocomplete="new-password" aria-required="true" />
+                <span asp-validation-for="Input.Telefone" class="text-danger"></span>
+            </div>
+            <fieldset class="row">
+                <div class="mb-3 col">
+                    <label asp-for="Input.Rua">Rua</label>
+                    <input asp-for="Input.Rua" class="form-control" autocomplete="new-password" aria-required="true" />
+                    <span asp-validation-for="Input.Rua" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col">
+                    <label asp-for="Input.Numero">Número</label>
+                    <input asp-for="Input.Numero" class="form-control" autocomplete="new-password" aria-required="true" />
+                    <span asp-validation-for="Input.Numero" class="text-danger"></span>
+                </div>
+            </fieldset>
+            <div class="row mb-3">
+                <label asp-for="Input.Bairro">Bairro</label>
+                <input asp-for="Input.Bairro" class="form-control" autocomplete="new-password" aria-required="true" />
+                <span asp-validation-for="Input.Bairro" class="text-danger"></span>
+            </div>
+            <fieldset class="row">
+                <div class="mb-3 col">
+                    <label asp-for="Input.Cidade">Cidade</label>
+                    <input asp-for="Input.Cidade" class="form-control" autocomplete="new-password" aria-required="true" />
+                    <span asp-validation-for="Input.Cidade" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col">
+                    <label asp-for="Input.Estado">Estado</label>
+                    <input asp-for="Input.Estado" class="form-control" autocomplete="new-password" aria-required="true" />
+                    <span asp-validation-for="Input.Estado" class="text-danger"></span>
+                </div>
+            </fieldset>
+        </fieldset>
+        <button type="submit" class="w-100 btn btn-lg btn-primary">Cadastrar</button>
+    </form>
+</section>

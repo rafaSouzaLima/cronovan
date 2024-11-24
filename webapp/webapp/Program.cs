@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorPages();
+
 builder.Services.AddDbContext<CronovanContext>(options => 
     options.UseMySQL(
         builder.Configuration.GetConnectionString("CronovanDefaultConnection") ?? 
@@ -15,8 +15,9 @@ builder.Services.AddDbContext<CronovanContext>(options =>
 );
 
 builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = false)
+       .AddRoles<IdentityRole>()
        .AddEntityFrameworkStores<CronovanContext>();
-
+       
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Default Password settings.
@@ -31,7 +32,6 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedEmail = false;
     options.SignIn.RequireConfirmedPhoneNumber = false;
 });
-
 builder.Services.ConfigureApplicationCookie(options =>
 {
     // Cookie settings

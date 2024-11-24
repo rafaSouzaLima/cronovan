@@ -1,0 +1,200 @@
+@page
+@model CreateModel
+@{
+    ViewData["Title"] = "Novo Estudante";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<section class="row justify-content-center">
+    <form method="post">
+        <fieldset class="border rounded p-3 mb-4" id="credenciais">
+            <legend>Credenciais</legend>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <label asp-for="Input.Cpf" class="form-label">CPF</label>
+                <input asp-for="Input.Cpf" class="form-control" aria-required="true" />
+                <span asp-validation-for="Input.Cpf" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Nome" class="form-label">Nome</label>
+                <input asp-for="Input.Nome" class="form-control" aria-required="true" />
+                <span asp-validation-for="Input.Nome" class="text-danger"></span>
+            </div>
+            <div class=" mb-3">
+                <label asp-for="Input.Email" class="form-label">E-mail</label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Senha" class="form-label">Senha</label>
+                <input asp-for="Input.Senha" class="form-control" autocomplete="current-password" aria-required="true" />
+                <span asp-validation-for="Input.Senha" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.ConfirmarSenha">Confirmar Senha</label>
+                <input asp-for="Input.ConfirmarSenha" class="form-control" autocomplete="new-password" aria-required="true" />
+                <span asp-validation-for="Input.ConfirmarSenha" class="text-danger"></span>
+            </div>
+        </fieldset>
+        <fieldset class="border rounded p-3 mb-4" id="dados-adicionais">
+            <legend>Dados Adicionais</legend>
+            <div class="row mb-3">
+                <label asp-for="Input.DataNascimento">Data de Nascimento</label>
+                <input asp-for="Input.DataNascimento" class="form-control" aria-required="true" />
+                <span asp-validation-for="Input.DataNascimento" class="text-danger"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Input.Telefone">Telefone</label>
+                <input asp-for="Input.Telefone" class="form-control" aria-required="true" />
+                <span asp-validation-for="Input.Telefone" class="text-danger"></span>
+            </div>
+            <fieldset class="row">
+                <div class="mb-3 col">
+                    <label asp-for="Input.Rua">Rua</label>
+                    <input asp-for="Input.Rua" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Input.Rua" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col">
+                    <label asp-for="Input.Numero">Número</label>
+                    <input asp-for="Input.Numero" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Input.Numero" class="text-danger"></span>
+                </div>
+            </fieldset>
+            <div class="row mb-3">
+                <label asp-for="Input.Bairro">Bairro</label>
+                <input asp-for="Input.Bairro" class="form-control" aria-required="true" />
+                <span asp-validation-for="Input.Bairro" class="text-danger"></span>
+            </div>
+            <fieldset class="row">
+                <div class="mb-3 col">
+                    <label asp-for="Input.Cidade">Cidade</label>
+                    <input asp-for="Input.Cidade" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Input.Cidade" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col">
+                    <label asp-for="Input.Estado">Estado</label>
+                    <input asp-for="Input.Estado" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Input.Estado" class="text-danger"></span>
+                </div>
+            </fieldset>
+        </fieldset>
+        <nav class="nav nav-tabs" role="tablist">
+            <button class="nav-link active" id="nav-responsavel-tab" data-bs-toggle="tab" data-bs-target="#nav-responsavel" type="button" role="tab" aria-controls="nav-responsavel" aria-selected="true">Responsável</button>
+            <button class="nav-link" id="nav-associar-responsavel-tab" data-bs-toggle="tab" data-bs-target="#nav-associar-responsavel" type="button" role="tab" aria-controls="nav-associar-responsavel" aria-selected="false">Associar Responsável</button>
+        </nav>
+        <section class="tab-content" id="nav-tabContent">
+            <section class="tab-pane fade show active" id="nav-responsavel" role="tabpanel" aria-labelledby="nav-responsavel-tab">
+                <fieldset class="border rounded p-3 mb-4 nav-item" id="dados-responsavel">
+                    <legend>Responsável</legend>
+                    <fieldset class="border rounded p-3 mb-4" id="credenciais-responsavel">
+                        <legend>Credenciais</legend>
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <div class="mb-3">
+                            <label asp-for="InputResponsavel.Cpf" class="form-label">CPF</label>
+                            <input asp-for="InputResponsavel.Cpf" class="form-control" />
+                            <span asp-validation-for="InputResponsavel.Cpf" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="InputResponsavel.Nome" class="form-label">Nome</label>
+                            <input asp-for="InputResponsavel.Nome" class="form-control"/>
+                            <span asp-validation-for="InputResponsavel.Nome" class="text-danger"></span>
+                        </div>
+                        <div class=" mb-3">
+                            <label asp-for="InputResponsavel.Email" class="form-label">E-mail</label>
+                            <input asp-for="InputResponsavel.Email" class="form-control" autocomplete="username" placeholder="name@example.com" />
+                            <span asp-validation-for="InputResponsavel.Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="InputResponsavel.Senha" class="form-label">Senha</label>
+                            <input asp-for="InputResponsavel.Senha" class="form-control" autocomplete="current-password" />
+                            <span asp-validation-for="InputResponsavel.Senha" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="InputResponsavel.ConfirmarSenha">Confirmar Senha</label>
+                            <input asp-for="InputResponsavel.ConfirmarSenha" class="form-control" autocomplete="new-password" />
+                            <span asp-validation-for="InputResponsavel.ConfirmarSenha" class="text-danger"></span>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border rounded p-3 mb-4" id="dados-adicionais-responsavel">
+                        <legend>Dados Adicionais</legend>
+                        <div class="row mb-3">
+                            <label asp-for="InputResponsavel.DataNascimento">Data de Nascimento</label>
+                            <input asp-for="InputResponsavel.DataNascimento" class="form-control" />
+                            <span asp-validation-for="InputResponsavel.DataNascimento" class="text-danger"></span>
+                        </div>
+                        <div class="row mb-3">
+                            <label asp-for="InputResponsavel.Telefone">Telefone</label>
+                            <input asp-for="InputResponsavel.Telefone" class="form-control" />
+                            <span asp-validation-for="InputResponsavel.Telefone" class="text-danger"></span>
+                        </div>
+                        <fieldset class="row">
+                            <div class="mb-3 col">
+                                <label asp-for="InputResponsavel.Rua">Rua</label>
+                                <input asp-for="InputResponsavel.Rua" class="form-control" />
+                                <span asp-validation-for="InputResponsavel.Rua" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3 col">
+                                <label asp-for="InputResponsavel.Numero">Número</label>
+                                <input asp-for="InputResponsavel.Numero" class="form-control" />
+                                <span asp-validation-for="InputResponsavel.Numero" class="text-danger"></span>
+                            </div>
+                        </fieldset>
+                        <div class="row mb-3">
+                            <label asp-for="InputResponsavel.Bairro">Bairro</label>
+                            <input asp-for="InputResponsavel.Bairro" class="form-control" />
+                            <span asp-validation-for="InputResponsavel.Bairro" class="text-danger"></span>
+                        </div>
+                        <fieldset class="row">
+                            <div class="mb-3 col">
+                                <label asp-for="InputResponsavel.Cidade">Cidade</label>
+                                <input asp-for="InputResponsavel.Cidade" class="form-control" />
+                                <span asp-validation-for="InputResponsavel.Cidade" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3 col">
+                                <label asp-for="InputResponsavel.Estado">Estado</label>
+                                <input asp-for="InputResponsavel.Estado" class="form-control" />
+                                <span asp-validation-for="InputResponsavel.Estado" class="text-danger"></span>
+                            </div>
+                        </fieldset>
+                    </fieldset>
+                </fieldset>
+            </section>
+            <section class="tab-pane fade" id="nav-associar-responsavel" role="tabpanel" aria-labelledby="nav-associar-responsavel-tab">
+                <fieldset class="border rounded p-3 mb-4 nav-item" id="associar-responsavel">
+                    <legend>Associar Responsável</legend>
+                        <table class="table">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.Responsaveis[0].Nome)</th>
+                                <th>@Html.DisplayNameFor(model => model.Responsaveis[0].Email)</th>
+                                <th>@Html.DisplayNameFor(model => model.Responsaveis[0].Cpf)</th>
+                                <th>@Html.DisplayNameFor(model => model.Responsaveis[0].DataNascimento)</th>
+                                <th>@Html.DisplayNameFor(model => model.Responsaveis[0].Telefone)</th>
+                                <th>@Html.DisplayNameFor(model => model.Responsaveis[0].Endereco)</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Responsaveis) {
+                                var enderecoFormatado = item.Endereco?.ToString() ?? string.Empty;
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Cpf)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DataNascimento)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Telefone)</td>
+                                    <td>@enderecoFormatado</td>
+                                    <td><input asp-for="CpfResponsavel" type="radio" value="@item.Cpf" /></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </fieldset>
+            </section>
+        </section>
+
+        <button type="submit" class="w-100 btn btn-lg btn-primary">Cadastrar</button>
+    </form>
+</section>

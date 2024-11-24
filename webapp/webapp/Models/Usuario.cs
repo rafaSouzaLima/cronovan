@@ -1,18 +1,42 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace webapp.Models;
 
 public class Usuario : IdentityUser {
-    public required string Nome { get; set; }
-    public required string Cpf { get; set; }
-    public required string Telefone { get; set; }
+    [DisplayName("E-mail")]
+    public override string? Email { get => base.Email; set => base.Email = value; }
+    
+    [DisplayName("Nome de Usuário")]
+    public override string? UserName { get => base.UserName; set => base.UserName = value; }
 
-    [ForeignKey("User")]
-    public required Endereco Endereco { get; set; }
+    [DisplayName("Nome")]
+    public string? Nome { get; set; }
 
+    [DisplayName("CPF")]
+    public string? Cpf { get; set; }
+
+    [DisplayName("Telefone")]
+    public string? Telefone { get; set; }
+
+    [DisplayName("Endereço")]
+    public virtual Endereco? Endereco { get; set; }
+
+    [DisplayName("Data de Nascimento")]
     [DataType(DataType.Date)]
     public DateTime DataNascimento { get; set; }
-    public bool Ativo { get; set; } = false;
+
+    public virtual ICollection<IdentityUserRole<string>> UserRoles { get; set; }
+
+    public const int IDADE_MAIORIDADE = 18;
+
+    public bool IsUnderage() {
+        var hoje = DateTime.Today;
+        int idade = hoje.Year - DataNascimento.Year;
+
+        if(DataNascimento.DayOfYear > hoje.DayOfYear) idade--;
+
+        return idade <= IDADE_MAIORIDADE;
+    }
 }

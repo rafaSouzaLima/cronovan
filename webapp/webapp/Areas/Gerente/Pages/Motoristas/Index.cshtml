@@ -1,0 +1,37 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Motoristas";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-area="Gerente" asp-page="/Motoristas/Create">Criar novo Motorista</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Motoristas[0].Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.Motoristas[0].Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Motoristas[0].Cnh)</th>
+            <th>@Html.DisplayNameFor(model => model.Motoristas[0].DataNascimento)</th>
+            <th>@Html.DisplayNameFor(model => model.Motoristas[0].Telefone)</th>
+            <th>@Html.DisplayNameFor(model => model.Motoristas[0].Endereco)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Motoristas) {
+            var enderecoFormatado = item.Endereco?.ToString() ?? string.Empty;
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.Cnh)</td>
+                <td>@Html.DisplayFor(modelItem => item.DataNascimento)</td>
+                <td>@Html.DisplayFor(modelItem => item.Telefone)</td>
+                <td>@enderecoFormatado</td>
+            </tr>
+        }
+    </tbody>
+</table>
