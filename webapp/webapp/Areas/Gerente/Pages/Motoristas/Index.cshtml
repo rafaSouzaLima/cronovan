@@ -4,6 +4,17 @@
     ViewData["Title"] = "Motoristas";
 }
 
+@section Menus {
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Estudantes/Index">Estudantes</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Motoristas/Index">Motoristas</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Responsaveis/Index">Responsáveis</a>
+    </li>
+}
 <h1>@ViewData["Title"]</h1>
 
 <p>
