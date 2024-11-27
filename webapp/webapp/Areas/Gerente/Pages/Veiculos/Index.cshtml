@@ -1,0 +1,44 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Veículos";
+}
+
+@section Menus {
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Estudantes/Index">Estudantes</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Motoristas/Index">Motoristas</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Responsaveis/Index">Responsáveis</a>
+    </li>
+    <li class="nav-item"> 
+        <a class="nav-link" asp-area="Gerente" asp-page="/Veiculos/Index">Veículos</a>
+    </li>
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-area="Gerente" asp-page="/Veiculos/Create">Criar novo Veículo</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Veiculos[0].NumeroRenavam)</th>
+            <th>@Html.DisplayNameFor(model => model.Veiculos[0].NumeroLugares)</th>
+            <th>@Html.DisplayNameFor(model => model.Veiculos[0].Descricao)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Veiculos) {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.NumeroRenavam)</td>
+                <td>@Html.DisplayFor(modelItem => item.NumeroLugares)</td>
+                <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
+            </tr>
+        }
+    </tbody>
+</table>

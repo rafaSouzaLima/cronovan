@@ -1,0 +1,48 @@
+@page
+@model CreateModel
+@{
+    ViewData["Title"] = "Novo Veículo";
+}
+
+@section Menus {
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Estudantes/Index">Estudantes</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Motoristas/Index">Motoristas</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Responsaveis/Index">Responsáveis</a>
+    </li>
+    <li class="nav-item"> 
+        <a class="nav-link" asp-area="Gerente" asp-page="/Veiculos/Index">Veículos</a>
+    </li>
+}
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<section class="row justify-content-center">
+    <form method="post">
+        <fieldset class="border rounded p-3 mb-4" id="dados-veiculo">
+            <legend>Veículo</legend>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <label asp-for="Input.NumeroRenavam" class="form-label">Número RENAVAM</label>
+                <input asp-for="Input.NumeroRenavam" class="form-control" aria-required="true" />
+                <span asp-validation-for="Input.NumeroRenavam" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.NumeroLugares" class="form-label">Número de Lugares</label>
+                <input asp-for="Input.NumeroLugares" class="form-control" aria-required="true" />
+                <span asp-validation-for="Input.NumeroLugares" class="text-danger"></span>
+            </div>
+            <div class=" mb-3">
+                <label asp-for="Input.Descricao" class="form-label">Descrição</label>
+                <input asp-for="Input.Descricao" class="form-control" aria-required="true" />
+                <span asp-validation-for="Input.Descricao" class="text-danger"></span>
+            </div>
+        </fieldset>
+
+        <button type="submit" class="w-100 btn btn-lg btn-primary">Cadastrar</button>
+    </form>
+</section>

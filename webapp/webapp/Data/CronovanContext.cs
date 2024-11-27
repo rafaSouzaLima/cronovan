@@ -14,6 +14,7 @@ public class CronovanContext : IdentityDbContext<Usuario> {
     public DbSet<Estudante> Estudantes { get; set; }
     public DbSet<Motorista> Motoristas { get; set; }
     public DbSet<Endereco> Enderecos { get; set; }
+    public DbSet<Veiculo> Veiculos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder) {
         base.OnModelCreating(builder);
