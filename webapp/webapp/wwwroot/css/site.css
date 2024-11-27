@@ -2,6 +2,12 @@ html {
   font-size: 14px;
 }
 
+.btn-primary, .btn-primary:hover{
+  color: #fff;
+  background-color: #28B463;
+  border-color: #28B463;
+}
+
 /* CSS Isolation don't work with asp-* tag helpers, so we have to define it on
 static files on wwwroot*/
 li.nav-item > a.nav-link {
