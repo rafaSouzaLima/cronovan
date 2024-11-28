@@ -30,6 +30,7 @@
             <th>@Html.DisplayNameFor(model => model.Veiculos[0].NumeroRenavam)</th>
             <th>@Html.DisplayNameFor(model => model.Veiculos[0].NumeroLugares)</th>
             <th>@Html.DisplayNameFor(model => model.Veiculos[0].Descricao)</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -38,6 +39,12 @@
                 <td>@Html.DisplayFor(modelItem => item.NumeroRenavam)</td>
                 <td>@Html.DisplayFor(modelItem => item.NumeroLugares)</td>
                 <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
+                <td>
+                    <form method="post" asp-area="Gerente" asp-page="/Veiculos/Delete">
+                        <input type="hidden" name="renavam" value="@item.NumeroRenavam">
+                        <button type="submit" class="btn btn-primary">Excluir</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
