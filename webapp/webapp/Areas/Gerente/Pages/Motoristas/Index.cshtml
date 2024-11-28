@@ -33,6 +33,7 @@
             <th>@Html.DisplayNameFor(model => model.Motoristas[0].DataNascimento)</th>
             <th>@Html.DisplayNameFor(model => model.Motoristas[0].Telefone)</th>
             <th>@Html.DisplayNameFor(model => model.Motoristas[0].Endereco)</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -45,6 +46,12 @@
                 <td>@Html.DisplayFor(modelItem => item.DataNascimento)</td>
                 <td>@Html.DisplayFor(modelItem => item.Telefone)</td>
                 <td>@enderecoFormatado</td>
+                <td>
+                    <form method="post" asp-area="Gerente" asp-page="/Motoristas/Delete">
+                        <input type="hidden" name="cnh" value="@item.Cnh">
+                        <button type="submit" class="btn btn-primary">Excluir</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
