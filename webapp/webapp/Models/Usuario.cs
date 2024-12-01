@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 namespace webapp.Models;
 
 public class Usuario : IdentityUser {
+    public const int IDADE_MAIORIDADE = 18;
+
     [DisplayName("E-mail")]
     public override string? Email { get => base.Email; set => base.Email = value; }
     
@@ -29,14 +31,12 @@ public class Usuario : IdentityUser {
 
     public virtual ICollection<IdentityUserRole<string>> UserRoles { get; set; }
 
-    public const int IDADE_MAIORIDADE = 18;
-
     public bool IsUnderage() {
         var hoje = DateTime.Today;
         int idade = hoje.Year - DataNascimento.Year;
 
         if(DataNascimento.DayOfYear > hoje.DayOfYear) idade--;
 
-        return idade <= IDADE_MAIORIDADE;
+        return idade < IDADE_MAIORIDADE;
     }
 }
