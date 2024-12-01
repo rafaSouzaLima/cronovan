@@ -21,7 +21,7 @@ public class Usuario : IdentityUser {
     public string? Telefone { get; set; }
 
     [DisplayName("Endereço")]
-    public virtual Endereco? Endereco { get; set; }
+    public Endereco? Endereco { get; set; }
 
     [DisplayName("Data de Nascimento")]
     [DataType(DataType.Date)]
