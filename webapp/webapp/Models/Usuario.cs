@@ -1,9 +1,11 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace webapp.Models;
 
+[Index(nameof(Cpf), IsUnique = true)]
 public class Usuario : IdentityUser {
     public const int IDADE_MAIORIDADE = 18;
 
