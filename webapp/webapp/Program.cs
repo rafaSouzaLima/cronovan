@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using webapp.Data;
 using webapp.Models;
 using Microsoft.AspNetCore.Identity;
+using webapp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,8 @@ builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireCo
        .AddRoles<IdentityRole>()
        .AddEntityFrameworkStores<CronovanContext>();
        
+builder.Services.AddScoped<MotoristaService>();
+    
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Default Password settings.

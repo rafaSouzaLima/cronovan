@@ -1,23 +1,20 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using webapp.Data;
 using webapp.Models;
+using webapp.Services;
 
 namespace webapp.Areas.Gerente.Pages.Motoristas;
 
 [Authorize(Roles = "Gerente")]
 class CreateModel : PageModel {
     private readonly ILogger<CreateModel> _logger;
-    private readonly UserManager<Usuario> _userManager;
-    private readonly CronovanContext _context;
+    private readonly MotoristaService _motoristaService;
 
-    public CreateModel(ILogger<CreateModel> logger, UserManager<Usuario> userManager, CronovanContext context) {
+    public CreateModel(ILogger<CreateModel> logger, MotoristaService motoristaService) {
         _logger = logger;
-        _userManager = userManager;
-        _context = context;
+        _motoristaService = motoristaService;
     }
 
     public IActionResult OnGet() {
@@ -53,6 +50,14 @@ class CreateModel : PageModel {
     public async Task<IActionResult> OnPostAsync() {
         if(!ModelState.IsValid) return Page();
 
+        var endereco = new Endereco {
+            Rua = Input.Rua,
+            Numero = Input.Numero,
+            Bairro = Input.Bairro,
+            Cidade = Input.Cidade,
+            Estado = Input.Estado
+        };
+
         var motorista = new Models.Motorista {
             Cnh = Input.Cnh,
             Cpf = Input.Cpf,
@@ -62,31 +67,19 @@ class CreateModel : PageModel {
             NormalizedEmail = Input.Email.ToUpper(),
             NormalizedUserName = Input.Email.ToUpper(),
             DataNascimento = Input.DataNascimento,
-            Telefone = Input.Telefone
+            Telefone = Input.Telefone,
+            Endereco = endereco
         };
 
-        var endereco = new Endereco {
-            Rua = Input.Rua,
-            Numero = Input.Numero,
-            Bairro = Input.Bairro,
-            Cidade = Input.Cidade,
-            Estado = Input.Estado
-        };
-
-        var result = await _userManager.CreateAsync(motorista, Input.Senha);
-
+        var result = await _motoristaService.CriarMotoristaAsync(motorista, Input.Senha);
+        
         if(!result.Succeeded) {
             foreach (var error in result.Errors) {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
             return Page();
         }
-        
-        endereco.UsuarioId = motorista.Id;
-        _context.Enderecos.Add(endereco);
-        await _context.SaveChangesAsync();
 
-        await _userManager.AddToRoleAsync(motorista, "Motorista");
         return RedirectToPage("/Motoristas/Index", new { area = "Gerente"});
     }
 
