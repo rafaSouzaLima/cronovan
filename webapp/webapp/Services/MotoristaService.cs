@@ -1,3 +1,4 @@
+using System.Transactions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using webapp.Data;
@@ -7,9 +8,11 @@ namespace webapp.Services;
 
 public class MotoristaService {
     private readonly UserManager<Usuario> _userManager;
+    private readonly CronovanContext _context;
 
-    public MotoristaService(UserManager<Usuario> userManager) {
+    public MotoristaService(CronovanContext context, UserManager<Usuario> userManager) {
         _userManager = userManager;
+        _context = context;
     }
 
     public async Task<IdentityResult> CriarMotoristaAsync(Motorista motorista, string senha) {
@@ -17,13 +20,28 @@ public class MotoristaService {
             throw new ArgumentNullException(nameof(motorista));
         }
 
-        var result = await _userManager.CreateAsync(motorista, senha);
-        if(!result.Succeeded) return result;
+        using var transaction = _context.Database.BeginTransaction();
 
-        result = await _userManager.AddToRoleAsync(motorista, "Motorista");
-        if(!result.Succeeded) return result;
+        try {
+            var result = await _userManager.CreateAsync(motorista, senha);
+            if(!result.Succeeded) {
+                transaction.Rollback();
+                return result;
+            }
 
-        return IdentityResult.Success;
+            result = await _userManager.AddToRoleAsync(motorista, "Motorista");
+            if(!result.Succeeded) {
+                transaction.Rollback();
+                return result;
+            }
+            
+            transaction.Commit();
+        
+            return IdentityResult.Success;
+        } catch (Exception) {
+            transaction.Rollback();
+            return IdentityResult.Failed(new IdentityError { Description = "Something went wrong!" });
+        }
     }
 
     public async Task<IdentityResult> AtualizarMotoristaAsync(Motorista motorista) {
@@ -31,14 +49,28 @@ public class MotoristaService {
             throw new ArgumentNullException(nameof(motorista), "O motorista passado não pode ser nulo.");
         }
 
-        var result = await _userManager.UpdateAsync(motorista);
-        return result;
+        using var transaction = _context.Database.BeginTransaction();
+
+        try {
+            var result = await _userManager.UpdateAsync(motorista);
+
+            transaction.Commit();
+
+            return result;
+        } catch(Exception) {
+            transaction.Rollback();
+            return IdentityResult.Failed(new IdentityError { Description = "Something went wrong!" });
+        }
     }
 
     public async Task<List<Motorista>> BuscarMotoristasAsync(string sliceCnh) {
+        if(sliceCnh == null) {
+            throw new ArgumentNullException(nameof(sliceCnh), "O CNH da busca não pode ser nulo");
+        }
+
         var motoristas = await _userManager.Users.OfType<Motorista>()
                                     .Where(m => m.Cnh.Contains(sliceCnh))
-                                    .ToListAsync();
+                                    .ToListAsync();     
         return motoristas;
     }
 
