@@ -20,6 +20,7 @@ builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireCo
        .AddEntityFrameworkStores<CronovanContext>();
        
 builder.Services.AddScoped<MotoristaService>();
+builder.Services.AddScoped<EstudanteService>();
     
 builder.Services.Configure<IdentityOptions>(options =>
 {

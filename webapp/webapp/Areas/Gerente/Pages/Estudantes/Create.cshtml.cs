@@ -7,23 +7,23 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using webapp.Data;
 using webapp.Models;
+using webapp.Services;
 
 namespace webapp.Areas.Gerente.Pages.Estudantes;
 
 [Authorize(Roles = "Gerente")]
 class CreateModel : PageModel {
     private readonly ILogger<CreateModel> _logger;
-    private readonly UserManager<Usuario> _userManager;
     private readonly CronovanContext _context;
+    private readonly EstudanteService _estudanteService;
 
-    public CreateModel(ILogger<CreateModel> logger, UserManager<Usuario> userManager, CronovanContext context) {
+    public CreateModel(ILogger<CreateModel> logger, CronovanContext context, EstudanteService estudanteService) {
         _logger = logger;
-        _userManager = userManager;
+        _estudanteService = estudanteService;
         _context = context;
     }
 
     public class InputModel {
-
         public required string Cpf { get; set; }
         public required string Nome { get; set; }
         public required string Email { get; set; }
@@ -91,17 +91,6 @@ class CreateModel : PageModel {
     public async Task<IActionResult> OnPostAsync() {
         if(!ModelState.IsValid) return Page();
 
-        var estudante = new Models.Estudante {
-            Cpf = Input.Cpf,
-            Nome = Input.Nome,
-            Email = Input.Email,
-            UserName = Input.Email,
-            NormalizedEmail = Input.Email.ToUpper(),
-            NormalizedUserName = Input.Email.ToUpper(),
-            DataNascimento = Input.DataNascimento,
-            Telefone = Input.Telefone
-        };
-
         var endereco = new Endereco {
             Rua = Input.Rua,
             Numero = Input.Numero,
@@ -110,64 +99,45 @@ class CreateModel : PageModel {
             Estado = Input.Estado
         };
 
+        var estudante = new Models.Estudante {
+            Cpf = Input.Cpf,
+            Nome = Input.Nome,
+            Email = Input.Email,
+            UserName = Input.Email,
+            NormalizedEmail = Input.Email.ToUpper(),
+            NormalizedUserName = Input.Email.ToUpper(),
+            DataNascimento = Input.DataNascimento,
+            Telefone = Input.Telefone,
+            Endereco = endereco
+        };
+
         if(estudante.IsUnderage()) {
-            Models.Responsavel? responsavel;
-
-            if(CpfResponsavel != null) {
-                responsavel = await _context.Responsaveis.FirstOrDefaultAsync(r => r.Cpf == CpfResponsavel);
-
-                if(responsavel == null) {
-                    ModelState.AddModelError(string.Empty, "Responsável com CPF informado não existe. Tente criá-lo!");
-                    return Page();
+            estudante.Responsavel = new Models.Responsavel {
+                Nome = InputResponsavel.Nome,
+                Cpf = InputResponsavel.Cpf,
+                Email = InputResponsavel.Email,
+                UserName = InputResponsavel.Email,
+                NormalizedEmail = InputResponsavel.Email?.ToUpper(),
+                NormalizedUserName = InputResponsavel.Email?.ToUpper(),
+                DataNascimento = InputResponsavel.DataNascimento ?? DateTime.MinValue,
+                Telefone = InputResponsavel.Telefone,
+                Endereco = new Endereco {
+                    Rua = InputResponsavel.Rua,
+                    Numero = InputResponsavel.Numero,
+                    Bairro = InputResponsavel.Bairro,
+                    Cidade = InputResponsavel.Cidade,
+                    Estado = InputResponsavel.Estado
                 }
-            } else {
-                responsavel = await _context.Responsaveis.FirstOrDefaultAsync(r => r.Cpf == InputResponsavel.Cpf);
-
-                if(responsavel != null) {
-                    ModelState.AddModelError(string.Empty, "Responsável com CPF informado já existe. Tente associá-lo!");
-                    return Page();
-                }
-
-                //Se não existe crie-o
-                responsavel = new Models.Responsavel {
-                    Nome = InputResponsavel.Nome,
-                    Cpf = InputResponsavel.Cpf,
-                    Email = InputResponsavel.Email,
-                    UserName = InputResponsavel.Email,
-                    NormalizedEmail = InputResponsavel.Email.ToUpper(),
-                    NormalizedUserName = InputResponsavel.Email.ToUpper(),
-                    DataNascimento = InputResponsavel.DataNascimento ?? DateTime.MinValue,
-                    Telefone = InputResponsavel.Telefone
-                };
-                
-                var enderecoResponsavel = new Endereco {
-                    Rua = InputResponsavel.Rua ?? string.Empty,
-                    Numero = InputResponsavel.Numero ?? string.Empty,
-                    Bairro = InputResponsavel.Bairro ?? string.Empty,
-                    Cidade = InputResponsavel.Cidade ?? string.Empty,
-                    Estado = InputResponsavel.Estado ?? string.Empty
-                };
-
-                var resultResponsavel = await _userManager.CreateAsync(responsavel, InputResponsavel.Senha ?? string.Empty);
-
-                if(!resultResponsavel.Succeeded) {
-                    foreach (var error in resultResponsavel.Errors) {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                    return Page();
-                }
-
-                enderecoResponsavel.UsuarioId = responsavel.Id;
-                _context.Enderecos.Add(enderecoResponsavel);
-                await _context.SaveChangesAsync();
-
-                await _userManager.AddToRoleAsync(responsavel, "Responsavel");
-            }
-            
-            estudante.ResponsavelId = responsavel.Id;
+            };
         }
 
-        var result = await _userManager.CreateAsync(estudante, Input.Senha);
+        IdentityResult result;
+
+        if(CpfResponsavel == null) {
+            result = await _estudanteService.CriarEstudanteAsync(estudante, Input.Senha);
+        } else {
+            result = await _estudanteService.CriarEstudanteAssociadoAsync(estudante, Input.Senha, CpfResponsavel);
+        }
 
         if(!result.Succeeded) {
             foreach (var error in result.Errors) {
@@ -175,12 +145,7 @@ class CreateModel : PageModel {
             }
             return Page();
         }
-        
-        endereco.UsuarioId = estudante.Id;
-        _context.Enderecos.Add(endereco);
-        await _context.SaveChangesAsync();
 
-        await _userManager.AddToRoleAsync(estudante, "Estudante");
         return RedirectToPage("/Estudantes/Index", new { area = "Gerente"});
     }
 
