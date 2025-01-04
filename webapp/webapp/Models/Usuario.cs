@@ -10,7 +10,14 @@ public class Usuario : IdentityUser {
     public const int IDADE_MAIORIDADE = 18;
 
     [DisplayName("E-mail")]
-    public override string? Email { get => base.Email; set => base.Email = value; }
+    public override string? Email { 
+        get => base.Email; 
+        set { 
+            base.Email = value;
+            base.NormalizedEmail = value?.ToUpperInvariant();
+            base.NormalizedUserName = value?.ToUpperInvariant();
+        }
+    }
     
     [DisplayName("Nome de Usuário")]
     public override string? UserName { get => base.UserName; set => base.UserName = value; }
