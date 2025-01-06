@@ -15,6 +15,8 @@ public class CronovanContext : IdentityDbContext<Usuario> {
     public DbSet<Motorista> Motoristas { get; set; }
     public DbSet<Endereco> Enderecos { get; set; }
     public DbSet<Veiculo> Veiculos { get; set; }
+    public DbSet<Viagem> Viagens { get; set; }
+    public DbSet<Agendamento> Agendamentos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder) {
         base.OnModelCreating(builder);
@@ -31,21 +33,54 @@ public class CronovanContext : IdentityDbContext<Usuario> {
                .HasForeignKey<Endereco>(e => e.UsuarioId)
                .IsRequired();
 
-        var roles = new IdentityRole[]
-        {
+        builder.Entity<Usuario>(b => {
+            b.HasMany(e => e.UserRoles)
+                .WithOne()
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
+        });
+
+        /*
+            Garantir que a entidade Viagem pegue as chaves estrangeiras
+            corretas do Motorista e Veículo.
+        */
+        builder.Entity<Motorista>()
+                .HasMany(m => m.Viagens)
+                .WithOne(v => v.Motorista)
+                .HasForeignKey(v => v.MotoristaId)
+                .IsRequired();
+        builder.Entity<Veiculo>()
+                .HasMany(ve => ve.Viagens)
+                .WithOne(v => v.Veiculo)
+                .HasForeignKey(v => v.NumeroRenavam)
+                .IsRequired();
+
+        /*
+            Agendamentos é uma relação de muitos para muitos
+        */
+
+        builder.Entity<Estudante>()
+                .HasMany(e => e.Viagens)
+                .WithMany(v => v.Estudantes)
+                .UsingEntity<Agendamento>();
+
+        // DATA SEEDING (Transferir posteriormente para a versão recomendada do .NET Core 9)
+        /*
+            Criar roles previamente para realizar o Data Seeding do usuário administrador.
+        */
+        var roles = new IdentityRole[] {
             new IdentityRole { Id = "admin-role-id", Name = "Administrador", NormalizedName = "ADMINISTRADOR" },
             new IdentityRole { Id = "manager-role-id", Name = "Gerente", NormalizedName = "GERENTE" },
             new IdentityRole { Id = "student-role-id", Name = "Estudante", NormalizedName = "ESTUDANTE" },
             new IdentityRole { Id = "responsible-role-id", Name = "Responsavel", NormalizedName = "RESPONSAVEL" },
             new IdentityRole { Id = "driver-role-id", Name = "Motorista", NormalizedName = "MOTORISTA" }
         };
-
         builder.Entity<IdentityRole>().HasData(roles);
         
         // TODO Também é bom futuramente colocar esses dados nas variáveis de ambiente
-        // do ambiente de produção
+        // do ambiente de produção.
         // O nome disso é Data Seeding e é bom ver a recomendação da Microsoft para dados dinâmicos
-        // como nesse caso, que usa hash. Porém as melhores recomendações ou pedem para isso ser
+        // como nesse caso, que usa hash. Porém, as melhores recomendações ou pedem para isso ser
         // feito diretamente no código da migração, ou colocar isso nos métodos novos de seeding
         // do EF9 Core.
         var hasher = new PasswordHasher<Usuario>();
@@ -57,12 +92,7 @@ public class CronovanContext : IdentityDbContext<Usuario> {
             NormalizedEmail = "ADMIN@ADMIN.COM"
         };
         defaultAdminUser.PasswordHash = hasher.HashPassword(defaultAdminUser, "admin");
-        builder.Entity<Usuario>(b => {
-            b.HasMany(e => e.UserRoles)
-                .WithOne()
-                .HasForeignKey(ur => ur.UserId)
-                .IsRequired();
-        }); 
+        
         builder.Entity<Usuario>().HasData(defaultAdminUser);
 
         /*

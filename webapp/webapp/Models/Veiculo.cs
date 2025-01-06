@@ -13,4 +13,6 @@ public class Veiculo {
 
     [DisplayName("Descrição")]
     public string? Descricao { get; set; }
+
+    public ICollection<Viagem> Viagens { get; } = [];
 }

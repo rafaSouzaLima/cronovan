@@ -7,4 +7,6 @@ namespace webapp.Models;
 public class Motorista : Usuario {
     [DisplayName("CNH")]
     public required string Cnh { get; set; }
+
+    public ICollection<Viagem> Viagens { get; } = [];
 }
