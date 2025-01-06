@@ -1,7 +1,7 @@
 @page
 @model IndexModel
 @{
-    ViewData["Title"] = "Veículos";
+    ViewData["Title"] = "Viagens";
 }
 
 @section Menus {
@@ -24,27 +24,29 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-area="Gerente" asp-page="/Veiculos/Create">Criar novo Veículo</a>
+    <a asp-area="Gerente" asp-page="/Viagens/Create">Criar nova Viagem</a>
 </p>
 
 <table class="table">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Veiculos[0].NumeroRenavam)</th>
-            <th>@Html.DisplayNameFor(model => model.Veiculos[0].NumeroLugares)</th>
-            <th>@Html.DisplayNameFor(model => model.Veiculos[0].Descricao)</th>
+            <th>@Html.DisplayNameFor(model => model.Viagens[0].NumeroRenavam)</th>
+            <th>@Html.DisplayNameFor(model => model.Viagens[0].Motorista.Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.Viagens[0].Saida)</th>
+            <th>@Html.DisplayNameFor(model => model.Viagens[0].Chegada)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Veiculos) {
+        @foreach (var item in Model.Viagens) {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.NumeroRenavam)</td>
-                <td>@Html.DisplayFor(modelItem => item.NumeroLugares)</td>
-                <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
+                <td>@Html.DisplayFor(modelItem => item.Motorista.Nome)</td>
+                <td>@Html.DisplayFor(modelItem => item.Saida)</td>
+                <td>@Html.DisplayFor(modelItem => item.Chegada)</td>
                 <td>
-                    <form method="post" asp-area="Gerente" asp-page="/Veiculos/Delete">
-                        <input type="hidden" name="renavam" value="@item.NumeroRenavam">
+                    <form method="post" asp-area="Gerente" asp-page="/Viagens/Delete">
+                        <input type="hidden" name="id" value="@item.Id">
                         <button type="submit" class="btn btn-primary">Excluir</button>
                     </form>
                 </td>

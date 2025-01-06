@@ -21,6 +21,7 @@ builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireCo
        
 builder.Services.AddScoped<MotoristaService>();
 builder.Services.AddScoped<EstudanteService>();
+builder.Services.AddScoped<ViagemService>();
     
 builder.Services.Configure<IdentityOptions>(options =>
 {

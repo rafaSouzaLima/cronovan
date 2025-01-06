@@ -1,0 +1,99 @@
+@page
+@model CreateModel
+@{
+    ViewData["Title"] = "Nova Viagem";
+}
+
+@section Menus {
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Estudantes/Index">Estudantes</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Motoristas/Index">Motoristas</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Gerente" asp-page="/Responsaveis/Index">Responsáveis</a>
+    </li>
+    <li class="nav-item"> 
+        <a class="nav-link" asp-area="Gerente" asp-page="/Veiculos/Index">Veículos</a>
+    </li>
+    <li class="nav-item"> 
+        <a class="nav-link" asp-area="Gerente" asp-page="/Viagens/Index">Viagens</a>
+    </li>
+}
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<section class="row justify-content-center">
+    <form method="post">
+        <fieldset class="border rounded p-3 mb-4" id="dados-viagem">
+            <legend>Viagem</legend>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <label asp-for="Input.Saida" class="form-label">Saída</label>
+                <input asp-for="Input.Saida" class="form-control" aria-required="true" />
+                <span asp-validation-for="Input.Saida" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Chegada" class="form-label">Chegada</label>
+                <input asp-for="Input.Chegada" class="form-control" aria-required="true" />
+                <span asp-validation-for="Input.Chegada" class="text-danger"></span>
+            </div>
+            <fieldset class="border rounded p-3 mb-4 nav-item" id="associar-motorista">
+                <legend>Associar Motorista</legend>
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Motoristas[0].Nome)</th>
+                            <th>@Html.DisplayNameFor(model => model.Motoristas[0].Email)</th>
+                            <th>@Html.DisplayNameFor(model => model.Motoristas[0].Cpf)</th>
+                            <th>@Html.DisplayNameFor(model => model.Motoristas[0].DataNascimento)</th>
+                            <th>@Html.DisplayNameFor(model => model.Motoristas[0].Telefone)</th>
+                            <th>@Html.DisplayNameFor(model => model.Motoristas[0].Endereco)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Motoristas) {
+                            var enderecoFormatado = item.Endereco?.ToString() ?? string.Empty;
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Cpf)</td>
+                                <td>@Html.DisplayFor(modelItem => item.DataNascimento)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Telefone)</td>
+                                <td>@enderecoFormatado</td>
+                                <td><input asp-for="Input.MotoristaCnh" type="radio" value="@item.Cnh" /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </fieldset>
+            <fieldset class="border rounded p-3 mb-4 nav-item" id="associar-veiculo">
+                <legend>Associar Veículo</legend>
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Veiculos[0].NumeroRenavam)</th>
+                            <th>@Html.DisplayNameFor(model => model.Veiculos[0].NumeroLugares)</th>
+                            <th>@Html.DisplayNameFor(model => model.Veiculos[0].Descricao)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Veiculos) {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.NumeroRenavam)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NumeroLugares)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
+                                <td><input asp-for="Input.NumeroRenavam" type="radio" value="@item.NumeroRenavam" /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </fieldset>
+        </fieldset>
+
+        <button type="submit" class="w-100 btn btn-lg btn-primary">Cadastrar</button>
+    </form>
+</section>
