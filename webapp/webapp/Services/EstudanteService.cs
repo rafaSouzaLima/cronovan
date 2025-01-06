@@ -15,7 +15,6 @@ public class EstudanteService {
         _context = context;
     }
 
-    // TODO: Ver se o responsável é inserido;
     public async Task<IdentityResult> CriarEstudanteAsync(Estudante estudante, string senha) {
         if (estudante == null)
             throw new ArgumentNullException(nameof(estudante));
@@ -41,7 +40,6 @@ public class EstudanteService {
         return IdentityResult.Success;
     }
 
-    // Também ver se o responsável vai ser associado
     public async Task<IdentityResult> CriarEstudanteAssociadoAsync(Estudante estudante, string senha, string? cpfResponsavel) {
         if (estudante == null)
             throw new ArgumentNullException(nameof(estudante));
