@@ -35,6 +35,7 @@
             <th>@Html.DisplayNameFor(model => model.Viagens[0].Saida)</th>
             <th>@Html.DisplayNameFor(model => model.Viagens[0].Chegada)</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -44,6 +45,7 @@
                 <td>@Html.DisplayFor(modelItem => item.Motorista.Nome)</td>
                 <td>@Html.DisplayFor(modelItem => item.Saida)</td>
                 <td>@Html.DisplayFor(modelItem => item.Chegada)</td>
+                <td><a class="btn btn-primary" asp-area="Gerente" asp-page="/Viagens/Edit" asp-route-id="@item.Id">Editar</a></td>
                 <td>
                     <form method="post" asp-area="Gerente" asp-page="/Viagens/Delete">
                         <input type="hidden" name="id" value="@item.Id">

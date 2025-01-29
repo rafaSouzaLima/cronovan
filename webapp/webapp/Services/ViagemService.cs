@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using webapp.Areas.Gerente.Pages.Viagens;
 using webapp.Data;
 using webapp.Models;
 
@@ -40,6 +41,43 @@ public class ViagemService {
         _context.Viagens.Add(viagem);
         await _context.SaveChangesAsync();
 
+        return null;
+    }
+
+    public async Task<string?> EditarViagemAsync(int id, Viagem viagemEditar, string motoristaCnh, string numeroRenavam, IList<InputAgendamentoForm> agendamentoForms) {
+        var viagem = await _context.Viagens
+            .Include(v => v.Estudantes)
+            .FirstOrDefaultAsync(v => v.Id == id);
+        if (viagem == null)
+            throw new ArgumentNullException(nameof(viagem));
+
+        var motorista = await _context.Motoristas.FirstOrDefaultAsync(m => m.Cnh == motoristaCnh);
+
+        if(motorista == null)
+            throw new ArgumentException($"O motorista com a CNH '{motoristaCnh}' não existe!");
+
+        if(!await _context.Veiculos.AnyAsync(v => v.NumeroRenavam == numeroRenavam))
+            throw new ArgumentException($"O veículo com o número de RENAVAM '{numeroRenavam}' não existe!");
+
+        viagem.MotoristaId = motorista.Id;
+        viagem.NumeroRenavam = numeroRenavam;
+        viagem.Chegada = viagemEditar.Chegada;
+        viagem.Saida = viagemEditar.Saida;
+
+        viagem.Agendamentos.Clear();
+        foreach(var iaf in agendamentoForms) {
+            var estudante = await _context.Estudantes.FirstOrDefaultAsync(e => e.Cpf == iaf.Cpf);
+            if(estudante != null) {
+                viagem.Agendamentos.Add(
+                    new Agendamento {
+                        Estudante = estudante,
+                        Chegada = iaf.DataHora
+                    }
+                );
+            }
+        }
+
+        await _context.SaveChangesAsync();
         return null;
     }
 
