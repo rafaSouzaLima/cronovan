@@ -29,6 +29,7 @@
         <fieldset class="border rounded p-3 mb-4" id="dados-viagem">
             <legend>Viagem</legend>
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <span asp-validation-for="Input" class="text-danger"></span>
             <div class="mb-3">
                 <label asp-for="Input.Saida" class="form-label">Saída</label>
                 <input asp-for="Input.Saida" class="form-control" aria-required="true" />
@@ -40,6 +41,7 @@
                 <span asp-validation-for="Input.Chegada" class="text-danger"></span>
             </div>
             <fieldset class="border rounded p-3 mb-4 nav-item" id="associar-motorista">
+                <span asp-validation-for="Input.MotoristaCnh" class="text-danger"></span>
                 <legend>Associar Motorista</legend>
                     <table class="table">
                     <thead>
@@ -70,6 +72,7 @@
                 </table>
             </fieldset>
             <fieldset class="border rounded p-3 mb-4 nav-item" id="associar-veiculo">
+                <span asp-validation-for="Input.NumeroRenavam" class="text-danger"></span>
                 <legend>Associar Veículo</legend>
                     <table class="table">
                     <thead>

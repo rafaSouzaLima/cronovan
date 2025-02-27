@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using webapp.Data;
 using webapp.Models;
 using webapp.Services;
+using webapp.Validators;
 
 namespace webapp.Areas.Gerente.Pages.Viagens;
 
@@ -21,6 +22,7 @@ class CreateModel : PageModel {
         _context = context;
     }
 
+    [IntervalValidation(nameof(Saida), nameof(Chegada), ErrorMessage: "A data de saída deve ser inferior a data de chegada!")]
     public class InputModel {
         public required string MotoristaCnh { get; set; }
         public required string NumeroRenavam { get; set; }
@@ -48,7 +50,10 @@ class CreateModel : PageModel {
     }
 
     public async Task<IActionResult> OnPostAsync() {
-        if(!ModelState.IsValid) return Page();
+        if(!ModelState.IsValid) {
+            await LoadDataAsync();
+            return Page();
+        } 
 
         var viagem = new Models.Viagem {
             Saida = Input.Saida,
@@ -66,5 +71,4 @@ class CreateModel : PageModel {
 
         return RedirectToPage("/Viagens/Index", new { area = "Gerente"});
     }
-
 }
