@@ -29,16 +29,19 @@
         <fieldset class="border rounded p-3 mb-4" id="dados-viagem">
             <legend>Viagem</legend>
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="mb-3">
-                <label asp-for="Input.Saida" class="form-label">Saída</label>
-                <input asp-for="Input.Saida" class="form-control" aria-required="true" />
-                <span asp-validation-for="Input.Saida" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Input.Chegada" class="form-label">Chegada</label>
-                <input asp-for="Input.Chegada" class="form-control" aria-required="true" />
-                <span asp-validation-for="Input.Chegada" class="text-danger"></span>
-            </div>
+            <span asp-validation-for="Input" class="text-danger"></span>
+            <fieldset class="row">
+                <div class="mb-3 col">
+                    <label asp-for="Input.Saida" class="form-label">Saída</label>
+                    <input asp-for="Input.Saida" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Input.Saida" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col">
+                    <label asp-for="Input.Chegada" class="form-label">Chegada</label>
+                    <input asp-for="Input.Chegada" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Input.Chegada" class="text-danger"></span>
+                </div>
+            </fieldset>
             <fieldset class="border rounded p-3 mb-4 nav-item" id="associar-motorista">
                 <legend>Associar Motorista</legend>
                     <table class="table">
@@ -94,7 +97,8 @@
             </fieldset>
             <fieldset class="border rounded p-3 mb-4 nav-item" id="associar-estudantes">
                 <legend>Associar Estudantes</legend>
-                    <table class="table">
+                <span asp-validation-for="InputAgendamentoForms" class="text-danger"></span>
+                <table class="table">
                     <thead>
                         <tr>
                             <th>@Html.DisplayNameFor(model => model.InputAgendamentoForms[0].Nome)</th>

@@ -9,7 +9,7 @@ sealed public class IntervalValidation : ValidationAttribute {
     private readonly string _beginField;
     private readonly string _endField;
 
-    public IntervalValidation(string beginField, string endField, string ErrorMessage) : base(ErrorMessage){
+    public IntervalValidation(string beginField, string endField) {
         _beginField = beginField;
         _endField = endField;
     }

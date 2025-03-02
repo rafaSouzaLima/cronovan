@@ -22,12 +22,21 @@ class CreateModel : PageModel {
         _context = context;
     }
 
-    [IntervalValidation(nameof(Saida), nameof(Chegada), ErrorMessage: "A data de saída deve ser inferior a data de chegada!")]
+    [IntervalValidation(nameof(Saida), nameof(Chegada), ErrorMessage = "A data de saída deve ser inferior a data de chegada!")]
     public class InputModel {
+        [Required(ErrorMessage = "A CNH é obrigatória")]
         public required string MotoristaCnh { get; set; }
+
+        [Required(ErrorMessage = "O número do RENAVAM é obrigatório")]
         public required string NumeroRenavam { get; set; }
-        public required DateTime Saida { get; set; }
-        public required DateTime Chegada { get; set; }
+
+        [Required(ErrorMessage = "A data de saída é obrigatória")]
+        [FutureDate(ErrorMessage = "A data de saída deve estar no futuro")]
+        public DateTime? Saida { get; set; }
+        
+        [Required(ErrorMessage = "A data de chegada é obrigatória")]
+        [FutureDate(ErrorMessage = "A data de saída deve estar no futuro")]
+        public DateTime? Chegada { get; set; }
     }
 
     [BindProperty]
@@ -56,10 +65,10 @@ class CreateModel : PageModel {
         } 
 
         var viagem = new Models.Viagem {
-            Saida = Input.Saida,
-            Chegada = Input.Chegada
+            Saida = Input.Saida ?? DateTime.Now,
+            Chegada = Input.Chegada ?? DateTime.Now.AddHours(2)
         };
-
+        
         var result = await _viagemService.CriarViagemAsync(viagem, Input.MotoristaCnh, Input.NumeroRenavam);
 
         if(result != null) {

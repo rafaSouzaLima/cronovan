@@ -5,7 +5,7 @@ using webapp.Validators;
 
 namespace webapp.Models;
 
-[IntervalValidation(nameof(Saida), nameof(Chegada), ErrorMessage: "A data de saída deve ser inferior a data de chegada!")]
+[IntervalValidation(nameof(Saida), nameof(Chegada), ErrorMessage = "A data de saída deve ser inferior a data de chegada!")]
 public class Viagem {
     public int Id { get; set; }
 
