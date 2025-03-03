@@ -97,11 +97,6 @@ class EditModel : PageModel {
             InputAgendamentoForms.Add(
                 new InputAgendamentoForm {
                     Cpf = estudante.Cpf ?? string.Empty,
-                    Nome = estudante.Nome ?? string.Empty,
-                    Email = estudante.Email ?? string.Empty,
-                    DataNascimento = estudante.DataNascimento,
-                    Telefone = estudante.Telefone ?? string.Empty,
-                    Endereco = estudante.Endereco?.ToString() ?? string.Empty,
                     Checked = agendado,
                     DataHora = dataAgendada
                 }
@@ -142,17 +137,6 @@ class EditModel : PageModel {
 public class InputAgendamentoForm {
     [DisplayName("CPF")]
     public required string Cpf { get; set; }
-    [DisplayName("Nome")]
-    public required string Nome { get; set; }
-    [DisplayName("E-mail")]
-    public required string Email { get; set; }
-    [DisplayName("Data de Nascimento")]
-    [DataType(DataType.Date)]
-    public required DateTime DataNascimento { get; set; }
-    [DisplayName("Telefone")]
-    public required string Telefone { get; set; }
-    [DisplayName("Endereço")]
-    public required string Endereco { get; set; }
     public bool Checked { get; set; }
     [DisplayName("Chegada")]
     public DateTime DataHora { get; set; }

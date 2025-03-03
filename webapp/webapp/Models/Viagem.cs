@@ -24,6 +24,6 @@ public class Viagem {
     [DisplayName("Motorista")]
     public Motorista Motorista { get; set; }
 
-    public ICollection<Estudante> Estudantes { get; } = [];
-    public ICollection<Agendamento> Agendamentos { get; } = [];
+    public IList<Estudante> Estudantes { get; } = [];
+    public IList<Agendamento> Agendamentos { get; } = [];
 }

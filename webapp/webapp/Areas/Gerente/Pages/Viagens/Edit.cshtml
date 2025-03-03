@@ -101,28 +101,29 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>@Html.DisplayNameFor(model => model.InputAgendamentoForms[0].Nome)</th>
-                            <th>@Html.DisplayNameFor(model => model.InputAgendamentoForms[0].Email)</th>
-                            <th>@Html.DisplayNameFor(model => model.InputAgendamentoForms[0].Cpf)</th>
-                            <th>@Html.DisplayNameFor(model => model.InputAgendamentoForms[0].DataNascimento)</th>
-                            <th>@Html.DisplayNameFor(model => model.InputAgendamentoForms[0].Telefone)</th>
-                            <th>@Html.DisplayNameFor(model => model.InputAgendamentoForms[0].Endereco)</th>
+                            <th>@Html.DisplayNameFor(model => model.Estudantes[0].Nome)</th>
+                            <th>@Html.DisplayNameFor(model => model.Estudantes[0].Email)</th>
+                            <th>@Html.DisplayNameFor(model => model.Estudantes[0].Cpf)</th>
+                            <th>@Html.DisplayNameFor(model => model.Estudantes[0].DataNascimento)</th>
+                            <th>@Html.DisplayNameFor(model => model.Estudantes[0].Telefone)</th>
+                            <th>@Html.DisplayNameFor(model => model.Estudantes[0].Endereco)</th>
                             <th></th>
                             <th>@Html.DisplayNameFor(model => model.InputAgendamentoForms[0].DataHora)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @for (var i = 0; i < Model.InputAgendamentoForms.Count() ; i++) {
+                        @for (var i = 0; i < Model.Estudantes.Count ; i++) {
+                            string endereco = Model.Estudantes[i].Endereco?.ToString() ?? "";
                             <tr>
-                                <td>@Html.DisplayFor(modelItem => Model.InputAgendamentoForms[i].Nome)</td>
-                                <td>@Html.DisplayFor(modelItem => Model.InputAgendamentoForms[i].Email)</td>
-                                <td>@Html.DisplayFor(modelItem => Model.InputAgendamentoForms[i].Cpf)</td>
-                                <td>@Html.DisplayFor(modelItem => Model.InputAgendamentoForms[i].DataNascimento)</td>
-                                <td>@Html.DisplayFor(modelItem => Model.InputAgendamentoForms[i].Telefone)</td>
-                                <td>@Html.DisplayFor(modelItem => Model.InputAgendamentoForms[i].Endereco)</td>
+                                <td>@Html.DisplayFor(modelItem => Model.Estudantes[i].Nome)</td>
+                                <td>@Html.DisplayFor(modelItem => Model.Estudantes[i].Email)</td>
+                                <td>@Html.DisplayFor(modelItem => Model.Estudantes[i].Cpf)</td>
+                                <td>@Html.DisplayFor(modelItem => Model.Estudantes[i].DataNascimento)</td>
+                                <td>@Html.DisplayFor(modelItem => Model.Estudantes[i].Telefone)</td>
+                                <td>@endereco</td>
                                 <td>@Html.CheckBoxFor(modelItem => Model.InputAgendamentoForms[i].Checked)</td>
                                 <td><input asp-for="InputAgendamentoForms[i].DataHora" class="form-control" /></td>
-                                @Html.HiddenFor(modelItem => Model.InputAgendamentoForms[i].Cpf)
+                                @Html.HiddenFor(modelItem => Model.InputAgendamentoForms[i].Cpf, Model.Estudantes[i].Cpf)
                             </tr>
                         }
                     </tbody>
