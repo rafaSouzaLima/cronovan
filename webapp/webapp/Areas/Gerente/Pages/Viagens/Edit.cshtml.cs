@@ -73,9 +73,8 @@ class EditModel : PageModel {
         }
     }
 
-    public async Task<IActionResult> OnGetAsync(int? id) {
-        if(id == null) return NotFound();
-        await LoadDataAsync((int)id);
+    public async Task<IActionResult> OnGetAsync(int id) {
+        await LoadDataAsync(id);
         if(Viagem == null) return NotFound();
 
         Input = new InputModel {
@@ -83,8 +82,6 @@ class EditModel : PageModel {
             Chegada = Viagem.Chegada,
             MotoristaCnh = Viagem.Motorista.Cnh,
             NumeroRenavam = Viagem.NumeroRenavam
-            // Cpfs = agendamentosOrdenados.Select(a => a.Estudante.Cpf ?? "").ToList(),
-            // AgendamentosHorario = agendamentosOrdenados.Select(a => a.Chegada).ToList()
         };
 
         var agendamentos = Viagem.Agendamentos.ToList();
@@ -114,9 +111,9 @@ class EditModel : PageModel {
         return Page(); 
     }
 
-    public async Task<IActionResult> OnPostAsync(int? id) {
+    public async Task<IActionResult> OnPostAsync(int id) {
         if (!ModelState.IsValid) {
-            await LoadDataAsync((int)id);
+            await LoadDataAsync(id);
             return Page();
         }
 
@@ -128,7 +125,7 @@ class EditModel : PageModel {
         var inputAgendamentos = InputAgendamentoForms.Where(iaf => iaf.Checked)
                                                         .ToList();
 
-        var result = await _viagemService.EditarViagemAsync((int)id, viagemEditar, Input.MotoristaCnh, Input.NumeroRenavam, inputAgendamentos);
+        var result = await _viagemService.EditarViagemAsync(id, viagemEditar, Input.MotoristaCnh, Input.NumeroRenavam, inputAgendamentos);
 
         if(result != null) {
             ModelState.AddModelError(string.Empty, result);
