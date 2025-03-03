@@ -14,6 +14,7 @@ public class Usuario : IdentityUser {
         get => base.Email; 
         set { 
             base.Email = value;
+            base.UserName = value;
             base.NormalizedEmail = value?.ToUpperInvariant();
             base.NormalizedUserName = value?.ToUpperInvariant();
         }
