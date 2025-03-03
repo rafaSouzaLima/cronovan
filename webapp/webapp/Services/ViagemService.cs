@@ -45,6 +45,8 @@ public class ViagemService {
     }
 
     public async Task<string?> EditarViagemAsync(int id, Viagem viagemEditar, string motoristaCnh, string numeroRenavam, IList<InputAgendamentoForm> agendamentoForms) {
+        var viagens = await _context.Viagens.Include(v => v.Agendamentos)
+                                            .ToListAsync();
         var viagem = await _context.Viagens
             .Include(v => v.Estudantes)
             .FirstOrDefaultAsync(v => v.Id == id);
@@ -56,8 +58,12 @@ public class ViagemService {
         if(motorista == null)
             throw new ArgumentException($"O motorista com a CNH '{motoristaCnh}' não existe!");
 
-        if(!await _context.Veiculos.AnyAsync(v => v.NumeroRenavam == numeroRenavam))
+        var veiculo = await _context.Veiculos.FirstOrDefaultAsync(v => v.NumeroRenavam == numeroRenavam);
+        if(veiculo == null)
             throw new ArgumentException($"O veículo com o número de RENAVAM '{numeroRenavam}' não existe!");
+
+        if(veiculo.NumeroLugares < agendamentoForms.Count)
+            return $"Uma viagem com o veículo de RENAVAM {veiculo.NumeroRenavam} não suporta esse número de estudantes!";
 
         viagem.MotoristaId = motorista.Id;
         viagem.NumeroRenavam = numeroRenavam;
@@ -68,6 +74,13 @@ public class ViagemService {
         foreach(var iaf in agendamentoForms) {
             var estudante = await _context.Estudantes.FirstOrDefaultAsync(e => e.Cpf == iaf.Cpf);
             if(estudante != null) {
+                if(iaf.DataHora < viagem.Saida || iaf.DataHora > viagem.Chegada)
+                    return $"A data do agendamento do estudante {estudante.Nome} deve estar no período da Viagem!";
+
+                var viagemConflitante = viagens.FirstOrDefault(v => v.Id != id && v.Agendamentos.Any(a => a.EstudanteId == estudante.Id) && viagem.Chegada >= v.Saida && viagem.Saida <= v.Chegada);
+                if(viagemConflitante != null)
+                    return $"O estudante escolhido já está associado a outra viagem entre os horários {viagemConflitante.Saida} e {viagemConflitante.Chegada}!";
+
                 viagem.Agendamentos.Add(
                     new Agendamento {
                         Estudante = estudante,

@@ -33,10 +33,12 @@ class EditModel : PageModel {
 
         [Required(ErrorMessage = "A data de saída é obrigatória")]
         [FutureDate(ErrorMessage = "A data de saída deve estar no futuro")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
         public DateTime? Saida { get; set; }
         
         [Required(ErrorMessage = "A data de chegada é obrigatória")]
         [FutureDate(ErrorMessage = "A data de saída deve estar no futuro")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
         public DateTime? Chegada { get; set; }
     }
 
