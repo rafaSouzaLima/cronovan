@@ -23,8 +23,8 @@ class IndexModel : PageModel {
             Viagens = await _context.Viagens
                                 .Include(v => v.Motorista)
                                 .Include(v => v.Veiculo)
-                                .OrderByDescending(v => v.Saida)
-                                .Where(v => v.Saida > DateTime.Now)
+                                .OrderBy(v => v.Saida)
+                                .Where(v => v.Saida >= DateTime.Now)
                                 .ToListAsync();
     }
 }
