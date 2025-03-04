@@ -1,0 +1,35 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Listas de Presença";
+}
+
+@section Menus {
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Motorista" asp-page="/Index">Listas de Presença</a>
+    </li>
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Viagens[0].NumeroRenavam)</th>
+            <th>@Html.DisplayNameFor(model => model.Viagens[0].Saida)</th>
+            <th>@Html.DisplayNameFor(model => model.Viagens[0].Chegada)</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Viagens) {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.NumeroRenavam)</td>
+                <td>@Html.DisplayFor(modelItem => item.Saida)</td>
+                <td>@Html.DisplayFor(modelItem => item.Chegada)</td>
+                <td><a class="btn btn-primary" asp-area="Motorista" asp-page="/ListaPresenca/Edit" asp-route-id="@item.Id">Selecionar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,74 @@
+@page "{id:int}"
+@model EditModel
+@{
+    ViewData["Title"] = "Lista de Presença";
+}
+
+@section Menus {
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Motorista" asp-page="/Index">Listas de Presença</a>
+    </li>
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr/>
+<section class="row justify-content-center">
+    <form method="post">
+        <fieldset class="border rounded p-3 mb-4" id="dados-lista-presenca">
+            <legend>Listas de Presença: @Model.Viagem!.Saida.ToString("dd/MM/yyyy")</legend>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <fieldset class="row">
+                <div class="mb-3 col">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Viagem!.Motorista)</label>
+                    <p class="form-control-plaintext">@Model.Viagem.Motorista.Nome (@Model.Viagem.Motorista.Cnh)</p>
+                </div>
+                <div class="mb-3 col">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Viagem!.Veiculo)</label>
+                    <p class="form-control-plaintext">@Model.Viagem.Veiculo.Descricao (@Model.Viagem.Veiculo.NumeroRenavam)</p>
+                </div>
+            </fieldset>
+            <fieldset class="row">
+                <div class="mb-3 col">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Viagem!.Saida)</label>
+                    <p class="form-control-plaintext">@Model.Viagem.Saida.ToString("dd/MM/yyyy HH:mm")</p>
+                </div>
+                <div class="mb-3 col">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Viagem!.Chegada)</label>
+                    <p class="form-control-plaintext">@Model.Viagem.Chegada.ToString("dd/MM/yyyy HH:mm")</p>
+                </div>
+            </fieldset>
+            <fieldset class="border rounded p-3 mb-4 nav-item" id="marcar-presenca">
+                <legend>Agendamentos</legend>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Viagem!.Agendamentos[0].Estudante.Nome)</th>
+                            <th>@Html.DisplayNameFor(model => model.Viagem!.Agendamentos[0].Estudante.Email)</th>
+                            <th>@Html.DisplayNameFor(model => model.Viagem!.Agendamentos[0].Estudante.Cpf)</th>
+                            <th>@Html.DisplayNameFor(model => model.Viagem!.Agendamentos[0].Estudante.Endereco)</th>
+                            <th>@Html.DisplayNameFor(model => model.Viagem!.Agendamentos[0].Chegada)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Viagem.Agendamentos.Count ; i++) {
+                            string endereco = Model.Viagem.Agendamentos[i].Estudante.Endereco?.ToString() ?? "";
+
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => Model.Viagem.Agendamentos[i].Estudante.Nome)</td>
+                                <td>@Html.DisplayFor(modelItem => Model.Viagem.Agendamentos[i].Estudante.Email)</td>
+                                <td>@Html.DisplayFor(modelItem => Model.Viagem.Agendamentos[i].Estudante.Cpf)</td>
+                                <td>@endereco</td>
+                                <td>@Html.DisplayFor(modelItem => Model.Viagem.Agendamentos[i].Chegada)</td>
+                                <td>@Html.CheckBoxFor(modelItem => Model.Confirmacoes[i].PresencaConfirmada)</td>
+                                @Html.HiddenFor(modelItem => Model.Confirmacoes[i].Cpf, Model.Viagem.Agendamentos[i].Estudante.Cpf)
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </fieldset>
+        </fieldset>
+        <button type="submit" class="w-100 btn btn-lg btn-primary">Salvar</button>
+    </form>
+</section>

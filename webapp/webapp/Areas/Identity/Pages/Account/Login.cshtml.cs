@@ -83,7 +83,7 @@ public class LoginModel : PageModel
         } else if (User.IsInRole("Responsavel")) {
             returnUrl = Url.Page("/Index", new { area = "Responsavel"});
         } else if (User.IsInRole("Motorista")) {
-            returnUrl = Url.Page("/Index", new { area = "Motorista"});
+            returnUrl = Url.Page("/ListaPresenca/Index", new { area = "Motorista"});
         }
 
         _logger.LogInformation("User logged in.");
