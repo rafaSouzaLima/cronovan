@@ -1,0 +1,73 @@
+@page "{data:datetime?}"
+@model IndexModel
+@{
+    ViewData["Title"] = "Cronograma Semanal";
+}
+
+@section Menus {
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Estudante" asp-page="/Index">Cronograma Semanal</a>
+    </li>
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr/>
+<section class="row justify-content-center">
+    <header class="d-flex flex-row justify-content-end align-items-center mb-3">
+        <button type="submit" class="w-10 btn btn-lg btn-primary" form="main-form">Salvar</button>
+    </header>
+    <form id="main-form" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+        <div class="calendar-container"> 
+            @foreach (var dia in Model.DiasDaSemana) {
+                <div class="day-column">
+                    <h5 class="text-center">@dia.ToString("dddd, dd/MM/yyyy")</h5>
+                    <div class="schedule">
+                        @{
+                            var agendamentos = Model.Agendamentos.Where(a => a.Chegada.Date == dia.Date).ToList();
+                        }
+                        @for (int i = 0; i < agendamentos.Count; i++){
+                            var startHour = agendamentos[i].Chegada.TimeOfDay.TotalMinutes;
+                            var endHour = agendamentos[i].Viagem.Chegada.TimeOfDay.TotalMinutes;
+                            var duration = endHour - startHour;
+
+                            var top = (startHour / 1440) * 100;
+                            var height = (duration / 1440) * 100;
+                            <div class="event @(Model.Presencas[i].PresencaEstudante ? "checked" : "unchecked")" style="top: @top%; height: @height%">
+                                <p>
+                                    @agendamentos[i].Chegada.ToString("HH:mm") - @agendamentos[i].Viagem.Chegada.ToString("HH:mm")
+                                    @Html.CheckBoxFor(modelItem => Model.Presencas[i].PresencaEstudante, new {
+                                        onchange = "toggleEventColor(this)"
+                                    })
+                                </p>
+                                @Html.HiddenFor(modelItem => Model.Presencas[i].ViagemId, Model.Agendamentos[i].Viagem.Id)
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".event input[type='checkbox']").forEach(function(checkbox) {
+                toggleEventColor(checkbox);
+            });
+        });
+
+        function toggleEventColor(checkbox) {
+            var event = checkbox.closest(".event");
+            if (checkbox.checked) {
+                event.classList.add("checked");
+                event.classList.remove("unchecked");
+            } else {
+                event.classList.add("unchecked");
+                event.classList.remove("checked");
+            }
+        }
+    </script>
+}
