@@ -87,10 +87,9 @@ class EditModel : PageModel {
         };
 
         var agendamentos = Viagem.Agendamentos.ToList();
-        var estudantesOrdenados = Estudantes.OrderBy(e => e.Cpf)
-                                             .ToList();
+        var estudantes = Estudantes.ToList();
 
-        foreach (var estudante in estudantesOrdenados) {
+        foreach (var estudante in estudantes) {
             bool agendado = Viagem.Estudantes.Any(e => e.Cpf == estudante.Cpf);
             DateTime dataAgendada = agendamentos
                                             .Where(a => a.EstudanteId == estudante.Id)
