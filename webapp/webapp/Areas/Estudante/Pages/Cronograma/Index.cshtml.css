@@ -1,3 +1,20 @@
+.pagination-nav a {
+    width: 40px;
+    height: 40px;
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination-nav a:hover {
+    background-color: #dedede;
+    border-radius: 50%;
+}
+
 .calendar-container {
     display: flex;
     overflow-x: auto;

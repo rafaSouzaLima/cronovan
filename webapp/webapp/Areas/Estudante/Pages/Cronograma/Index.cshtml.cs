@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using webapp.Data;
 using webapp.Models;
 using webapp.Extensions;
+using webapp.Pagination;
 
 namespace webapp.Areas.Estudante.Pages.Cronograma;
 
@@ -23,7 +24,7 @@ class IndexModel : PageModel {
 
     
     public IList<DateTime> DiasDaSemana { get; set; } = [];
-    public IList<Agendamento> Agendamentos { get; set; } = [];
+    public WeeklyPagination<Agendamento> Agendamentos { get; set; } = [];
     
     [BindProperty(SupportsGet = true)]
     public DateTime Data { get; set; } = DateTime.Today;
@@ -41,10 +42,14 @@ class IndexModel : PageModel {
         if(_context.Agendamentos == null) return;
 
         // If no user is found, something really wrong has happened, so this must throw an error.
-        Agendamentos = await _context.Agendamentos.Include(a => a.Viagem)
-                                                  .Include(a => a.Estudante)
-                                                  .Where(a => a.EstudanteId == Usuario!.Id)
-                                                  .ToListAsync();
+        await Agendamentos.PaginateAsync(
+            _context.Agendamentos
+                .Include(a => a.Viagem)
+                .Include(a => a.Estudante)
+                .Where(a => a.EstudanteId == Usuario!.Id),
+            Data,
+            a => a.Chegada
+        );
         DiasDaSemana = GetDiasDaSemana();
     }
 
