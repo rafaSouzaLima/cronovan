@@ -1,0 +1,52 @@
+.pagination-nav a {
+    width: 40px;
+    height: 40px;
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination-nav a:hover {
+    background-color: #dedede;
+    border-radius: 50%;
+}
+
+.calendar-container {
+    display: flex;
+    overflow-x: auto;
+}
+.day-column {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 10px;
+    position: relative;
+}
+.schedule {
+    position: relative;
+    height: 1200px;
+    min-height: 100vh;
+    overflow-y: auto;
+    background: #f5f5f5;
+}
+.event {
+    box-sizing: border-box;
+    position: absolute;
+    left: 5%;
+    width: 90%;
+    padding: 5px;
+    border-radius: 5px;
+}
+.event.checked {
+    background: #28b463;
+    color: white;
+    border: none;
+}
+.event.unchecked {
+    background: white;
+    color: black;
+    border: 2px solid #28b463;
+}

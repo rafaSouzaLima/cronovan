@@ -1,0 +1,32 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Estudantes associados";
+}
+
+@section Menus {
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Responsavel" asp-page="/Cronogramas/Index">Estudantes associados</a>
+    </li>
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Estudantes[0].Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.Estudantes[0].Cpf)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Estudantes) {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                <td>@Html.DisplayFor(modelItem => item.Cpf)</td>
+                <td><a class="btn btn-primary" asp-area="Responsavel" asp-page="/Cronogramas/Consulta" asp-route-cpf="@item.Cpf" asp-route-data="">Consultar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

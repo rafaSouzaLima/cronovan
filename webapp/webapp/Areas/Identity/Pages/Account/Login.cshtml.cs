@@ -81,7 +81,7 @@ public class LoginModel : PageModel
         } else if (User.IsInRole("Estudante")) {
             returnUrl = Url.Page("/Cronograma/Index", new { area = "Estudante"});
         } else if (User.IsInRole("Responsavel")) {
-            returnUrl = Url.Page("/Index", new { area = "Responsavel"});
+            returnUrl = Url.Page("/Cronogramas/Index", new { area = "Responsavel"});
         } else if (User.IsInRole("Motorista")) {
             returnUrl = Url.Page("/ListaPresenca/Index", new { area = "Motorista"});
         }

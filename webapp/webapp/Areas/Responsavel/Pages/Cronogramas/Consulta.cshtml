@@ -1,12 +1,12 @@
-@page "{data:datetime?}"
-@model IndexModel
+@page "{cpf}/{data:datetime?}"
+@model ConsultaModel
 @{
-    ViewData["Title"] = "Cronograma Semanal";
+    ViewData["Title"] = $"Consulta - {Model.Estudante.Nome}";
 }
 
 @section Menus {
     <li class="nav-item">
-        <a class="nav-link" asp-area="Estudante" asp-page="/Cronograma/Index">Cronograma Semanal</a>
+        <a class="nav-link" asp-area="Responsavel" asp-page="/Cronogramas/Index">Estudantes associados</a>
     </li>
 }
 
@@ -20,8 +20,8 @@
     <form id="main-form" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
         <nav class="pagination-nav d-flex flex-row justify-content-between align-items-center mb-3">
-            <a href="@Url.Page("/Cronograma/Index", new { area = "Estudante", data = Model.Data.AddDays(-7).ToString("yyyy-MM-dd")})">&lt;</a>
-            <a href="@Url.Page("/Cronograma/Index", new { area = "Estudante", data = Model.Data.AddDays(7).ToString("yyyy-MM-dd")})">&gt;</a>
+            <a href="@Url.Page("/Cronogramas/Consulta", new { area = "Responsavel", cpf = Model.Estudante.Cpf, data = Model.Data.AddDays(-7).ToString("yyyy-MM-dd")})">&lt;</a>
+            <a href="@Url.Page("/Cronogramas/Consulta", new { area = "Responsavel", cpf = Model.Estudante.Cpf, data = Model.Data.AddDays(7).ToString("yyyy-MM-dd")})">&gt;</a>
         </nav>
         <div class="calendar-container">
             @foreach (var dia in Model.DiasDaSemana) {
@@ -54,6 +54,7 @@
                     </div>
                 </div>
             }
+            @Html.HiddenFor(modelItem => Model.Cpf)
         </div>
     </form>
 </section>
