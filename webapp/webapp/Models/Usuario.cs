@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,8 +27,13 @@ public class Usuario : IdentityUser {
     [DisplayName("Nome")]
     public string? Nome { get; set; }
 
+    private string? _cpf;
     [DisplayName("CPF")]
-    public string? Cpf { get; set; }
+    public string? Cpf {
+        get => _cpf;
+        set => _cpf = value is null ? null : Regex.Replace(value, @"\D", "");
+    }
+
 
     [DisplayName("Telefone")]
     public string? Telefone { get; set; }

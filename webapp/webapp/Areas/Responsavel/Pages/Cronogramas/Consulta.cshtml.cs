@@ -63,7 +63,8 @@ class ConsultaModel : PageModel {
         Cpf = Regex.Replace(Cpf, @"\D", "");
         var estudante = await _context.Estudantes.FirstOrDefaultAsync(e => e.Cpf == Cpf);
 
-        if(Estudante is null) return NotFound();
+        if(estudante is null) return NotFound();
+        Estudante = estudante!;
         if(Estudante.ResponsavelId != usuario.Id) return Forbid();
 
         await LoadDataAsync();
@@ -87,7 +88,7 @@ class ConsultaModel : PageModel {
         if(Usuario == null) return Unauthorized();
 
         var agendamentos = await _context.Agendamentos.Include(a => a.Estudante)
-                                                    .Where(a => a.EstudanteId == Usuario.Id)
+                                                    .Where(a => a.Estudante.Cpf == Cpf)
                                                     .ToListAsync();
         foreach(var agendamento in agendamentos) {
             var presenca = Presencas.FirstOrDefault(p => p.ViagemId == agendamento.ViagemId);
