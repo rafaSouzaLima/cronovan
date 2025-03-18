@@ -2,6 +2,7 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Cronograma Semanal";
+    var culture = new CultureInfo("pt-BR");
 }
 
 @section Menus {
@@ -26,7 +27,10 @@
         <div class="calendar-container">
             @foreach (var dia in Model.DiasDaSemana) {
                 <div class="day-column">
-                    <h5 class="text-center">@dia.ToString("dddd, dd/MM/yyyy")</h5>
+                    @{
+                        string dataFormatada = dia.ToString("dddd, dd/MM/yyyy", culture);
+                    }
+                    <h5 class="text-center">@culture.TextInfo.ToTitleCase(dataFormatada)</h5>
                     <div class="schedule">
                         @{
                             var agendamentos = Model.Agendamentos.Where(a => a.Chegada.Date == dia.Date).ToList();
