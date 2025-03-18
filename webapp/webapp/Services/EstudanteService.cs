@@ -99,16 +99,20 @@ public class EstudanteService {
                 });
         }
 
-        var responsavel = await _userManager.Users.OfType<Responsavel>()
-                                    .Include(r => r.Estudantes)
-                                    .FirstOrDefaultAsync(r => r.Cpf == estudante.Responsavel.Cpf);
-        
-        if(responsavel != null && responsavel.Estudantes.Count == 1) {
-            var resultResponsavel = await _userManager.DeleteAsync(responsavel);
-        
-            if(!resultResponsavel.Succeeded) return resultResponsavel;
-        }
+        var cpfResponsavel = estudante.Responsavel?.Cpf;
 
+        if(!string.IsNullOrWhiteSpace(cpfResponsavel)) {
+            var responsavel = await _userManager.Users.OfType<Responsavel>()
+                                    .Include(r => r.Estudantes)
+                                    .FirstOrDefaultAsync(r => r.Cpf == cpfResponsavel);
+        
+            if(responsavel != null && responsavel.Estudantes.Count == 1) {
+                var resultResponsavel = await _userManager.DeleteAsync(responsavel);
+            
+                if(!resultResponsavel.Succeeded) return resultResponsavel;
+            }
+        }
+        
         var result = await _userManager.DeleteAsync(estudante);
         if(!result.Succeeded) return result;
 

@@ -112,6 +112,12 @@ class CreateModel : PageModel {
         };
 
         if(estudante.IsUnderage()) {
+            if (InputResponsavel == null || string.IsNullOrWhiteSpace(InputResponsavel.Nome) || 
+                string.IsNullOrWhiteSpace(InputResponsavel.Cpf) || string.IsNullOrWhiteSpace(InputResponsavel.Email)) {
+                
+                ModelState.AddModelError(string.Empty, "Estudantes menores de idade devem ter um responsável cadastrado.");
+                return Page();
+            }
             estudante.Responsavel = new Models.Responsavel {
                 Nome = InputResponsavel.Nome,
                 Cpf = InputResponsavel.Cpf,
